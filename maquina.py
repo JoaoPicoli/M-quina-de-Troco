@@ -41,15 +41,15 @@ def val_payment(prod_price):
 
 def calc_change(valor):
     coins = [100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05, 0.01]
-    troco = {}
+    troco = []
 
     for coin in coins:
         if valor >= coin:
             quantidade_moedas = int(valor // coin)
             valor = round(valor - quantidade_moedas * coin, 2)
-            troco[coin] = quantidade_moedas
-
-    return {moeda: quantidade for moeda, quantidade in troco.items() if quantidade > 0}
+            if quantidade_moedas > 0:
+                troco.append([coin, quantidade_moedas])
+    return troco
 
 def dedeuce_prod(prod_choice):
     prod_options[prod_choice][3] -= 1
@@ -66,7 +66,7 @@ def main():
         if exchange > 0:
             troco = calc_change(exchange)
             print(f"\nTroco: {exchange}:")
-            for moeda, quantidade in troco.items():
+            for moeda, quantidade in troco:
                 print(f"{moeda} x {quantidade}")
         
         dedeuce_prod(prod_choice)
